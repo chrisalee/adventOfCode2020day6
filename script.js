@@ -2120,6 +2120,40 @@ epnxvgr
 ywepngvu
 `;
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//PART 2
+const responseText = sample;
+//break up the groups - get an array of array of strings
+const groups = responseText.trim().split('\n\n').map(group => group.split('\n'));
+// console.log(groups);
+//count how many unique letters in each array of strings
+const countLetters = group => {
+  const sets = group.map(line => new Set(line));
+  return [..."abcdefghijklmnopqrstuvwxyz"].filter(char => sets.every(set => set.has(char))).length;
+}
+//add up all the counts
+const letterCounts = groups.map(countLetters);
+const sumAll = letterCounts.reduce((a, b) => a + b);
+
+console.log(sumAll);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//PART 1
+const responseText = sample;
+//break up the groups - get an array of array of strings
+const groups = responseText.trim().split('\n\n').map(group => group.split('\n'));
+// console.log(groups);
+//count how many unique letters in each array of strings
+const countLetters = group => {
+  const sets = group.map(line => new Set(line));
+  return [..."abcdefghijklmnopqrstuvwxyz"].filter(char => sets.some(set => set.has(char))).length;
+}
+//add up all the counts
+const letterCounts = groups.map(countLetters);
+const sumAll = letterCounts.reduce((a, b) => a + b);
+
+console.log(sumAll);
 
 ////////////////////////////////////////////////////////////////////////////////////
 //PART 1: initial code
