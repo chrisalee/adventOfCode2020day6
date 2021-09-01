@@ -2120,7 +2120,23 @@ epnxvgr
 ywepngvu
 `;
 
-///// BINARY APPROACH
+// OPTIMIZED APPROACH
+const responseText = sample;
+const groups = responseText.trim().split('\n\n').map(group => group.split('\n'));
+const charToBinary = char => 
+  1 << (char.charCodeAt() - 97);
+const wordToBinary = word => 
+  [...word].map(charToBinary).reduce((result, binary) => result | binary, 0)
+const countSetBits = binary => binary ? countSetBits(binary & (binary - 1)) + 1 : 0;
+const countGroupOr = group => 
+  countSetBits(group.reduce((total, word) => total | wordToBinary(word), 0));
+const countGroupAnd = group => 
+  countSetBits(group.reduce((total, word) => total & wordToBinary(word), (1 << 27) - 1));
+
+console.log('|', groups.map(countGroupOr).reduce((total, index) => total + index));
+console.log('&', groups.map(countGroupAnd).reduce((total, index) => total + index));
+
+///// BINARY APPROACH  //////////////////////////////////////////////////////////////////////////////////////////////
 const responseText = sample;
 //break up the groups - get an array of array of strings
 const groups = responseText.trim().split('\n\n').map(group => group.split('\n'));
