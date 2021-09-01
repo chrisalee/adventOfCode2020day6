@@ -2120,6 +2120,36 @@ epnxvgr
 ywepngvu
 `;
 
+///// BINARY APPROACH
+const responseText = sample;
+//break up the groups - get an array of array of strings
+const groups = responseText.trim().split('\n\n').map(group => group.split('\n'));
+
+//for each group
+// convert each char to a number (binary)
+const charToBinary = char => 
+  1 << (char.charCodeAt() - 97);  //shift bits, 97 for lowercase numbers
+// convert each "word" to a number (bitmask???)
+const wordToBinary = word => 
+  [...word].map(charToBinary).reduce((result, binary) => result | binary, 0)
+
+//for part 1. do a bitwise | on all the bitmasks
+const countGroupOr = group => 
+  countSetBits(group.reduce((total, word) => total | wordToBinary(word), 0));
+//for part 2.  do a bitwise & on all the bitmasks
+const countGroupAnd = group => 
+  countSetBits(group.reduce((total, word) => total & wordToBinary(word), (1 << 27) - 1));
+//find the number of set bit in each result
+const countSetBits = binary => binary ? countSetBits(binary >> 1) + (binary & 1) : 0;
+
+
+console.log('|', countGroupOr(groups[0]));
+console.log('&', countGroupAnd(groups[0]));
+
+// console.log('|', countGroupOr(groups[0]).toString(2));
+// console.log('&', countGroupAnd(groups[0]).toString(2));
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //PART 2
 const responseText = sample;
